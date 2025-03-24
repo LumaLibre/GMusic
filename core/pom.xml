@@ -13,9 +13,9 @@
     </parent>
 
     <properties>
-        <spigot.version>1.19.2-R0.1-SNAPSHOT</spigot.version>
-        <paper.version>1.19.2-R0.1-SNAPSHOT</paper.version>
-        <placeholderapi.version>2.11.2</placeholderapi.version>
+        <spigot.version>1.21.4-R0.1-SNAPSHOT</spigot.version>
+        <paper.version>1.21.4-R0.1-SNAPSHOT</paper.version>
+        <placeholderapi.version>2.11.6</placeholderapi.version>
     </properties>
 
     <repositories>

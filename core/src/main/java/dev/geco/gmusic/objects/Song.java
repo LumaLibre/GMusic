@@ -1,11 +1,15 @@
 package dev.geco.gmusic.objects;
 
-import java.io.*;
-import java.util.*;
-import java.util.stream.*;
+import org.bukkit.Material;
+import org.bukkit.SoundCategory;
+import org.bukkit.Tag;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-import org.bukkit.*;
-import org.bukkit.configuration.file.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Song {
 	
@@ -44,7 +48,7 @@ public class Song {
 	private long e = 0;
 	
 	
-	private final List<Material> DICS = Tag.ITEMS_MUSIC_DISCS.getValues().parallelStream().collect(Collectors.toList());
+	private final List<Material> DICS = Tag.ITEMS_CREEPER_DROP_MUSIC_DISCS.getValues().parallelStream().collect(Collectors.toList());
 	
 	public Song(File File) {
 		
