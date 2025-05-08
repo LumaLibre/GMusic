@@ -9,34 +9,23 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Song {
-	
-	private YamlConfiguration f;
-	
-	private final String fn;
-	
+
+    private final String fileName;
 	private final String id;
-	
-	private String t;
-	
-	private String o;
-	
-	private String a;
-	
-	private List<String> d = new ArrayList<>();
-	
-	private List<String> cg = new ArrayList<>();
-	
-	private Material ma;
-	
-	private SoundCategory c;
+	private final String title;
+	private final String oAuthor;
+	private final String author;
+	private final List<String> description;
+	private final List<String> categories;
+	private Material material;
+	private SoundCategory soundCategory;
 	
 	
-	private HashMap<String, String> i = new HashMap<String, String>();
+	private HashMap<String, String> instruments = new HashMap<String, String>();
 	
-	private HashMap<String, List<Note>> p = new HashMap<String, List<Note>>();
+	private HashMap<String, List<Note>> noteParts = new HashMap<String, List<Note>>();
 	
 	private List<Note> m = new ArrayList<>();
 	
@@ -46,48 +35,47 @@ public class Song {
 	private long na = 0;
 	
 	private long e = 0;
-	
-	
-	private final List<Material> DICS = Tag.ITEMS_CREEPER_DROP_MUSIC_DISCS.getValues().parallelStream().collect(Collectors.toList());
-	
-	public Song(File File) {
+
+
+    public Song(File File) {
+
+        YamlConfiguration file = YamlConfiguration.loadConfiguration(File);
+		fileName = File.getName();
 		
-		f = YamlConfiguration.loadConfiguration(File);
-		fn = File.getName();
-		
-		id = f.getString("Song.Id");
-		t = f.getString("Song.Title", id);
-		o = f.getString("Song.OAuthor");
-		a = f.getString("Song.Author");
-		d = f.getStringList("Song.Description");
-		cg = f.getStringList("Song.Categorys");
-		String tm = f.getString("Song.Material");
+		id = file.getString("Song.Id");
+		title = file.getString("Song.Title", id);
+		oAuthor = file.getString("Song.OAuthor");
+		author = file.getString("Song.Author");
+		description = file.getStringList("Song.Description");
+		categories = file.getStringList("Song.Categorys");
+		String tm = file.getString("Song.Material");
 		if(tm != null) {
-			try { ma = Material.valueOf(tm.toUpperCase()); } catch(IllegalArgumentException e) { }
+			try { material = Material.valueOf(tm.toUpperCase()); } catch(IllegalArgumentException e) { }
 		}
-		if(ma == null) ma = id == null ? DICS.get(0) : DICS.get(id.length() <= DICS.size() - 1 ? id.length() : id.length() % (DICS.size() - 1));
-		try { c = SoundCategory.valueOf(f.getString("Song.Category").toUpperCase()); } catch(IllegalArgumentException e) { c = SoundCategory.RECORDS; }
+        List<Material> DISCS = Tag.ITEMS_CREEPER_DROP_MUSIC_DISCS.getValues().parallelStream().toList();
+        if(material == null) material = id == null ? DISCS.getFirst() : DISCS.get(id.length() <= DISCS.size() - 1 ? id.length() : id.length() % (DISCS.size() - 1));
+		try { soundCategory = SoundCategory.valueOf(file.getString("Song.Category").toUpperCase()); } catch(IllegalArgumentException e) { soundCategory = SoundCategory.RECORDS; }
 		
 		List<String> il = new ArrayList<>();
-		try { for(String l : f.getConfigurationSection("Song.Content.Instruments").getKeys(false)) il.add(l); } catch (Exception e) { }
+		try { for(String l : file.getConfigurationSection("Song.Content.Instruments").getKeys(false)) il.add(l); } catch (Exception e) { }
 		for(String l : il) {
 			try {
-				String s = NoteInstrument.getInstrument(Integer.parseInt(f.getString("Song.Content.Instruments." + l)));
-				if(s != null) i.put(l, s);
+				String s = NoteInstrument.getInstrument(Integer.parseInt(file.getString("Song.Content.Instruments." + l)));
+				if(s != null) instruments.put(l, s);
 				else throw new NumberFormatException();
-			} catch(IllegalArgumentException e) { i.put(l, f.getString("Song.Content.Instruments." + l)); }
+			} catch(IllegalArgumentException e) { instruments.put(l, file.getString("Song.Content.Instruments." + l)); }
 		}
 		
 		List<String> pl = new ArrayList<>();
-		try { for(String l : f.getConfigurationSection("Song.Content.Parts").getKeys(false)) pl.add(l); } catch (Exception e) { }
+		try { for(String l : file.getConfigurationSection("Song.Content.Parts").getKeys(false)) pl.add(l); } catch (Exception e) { }
 		
 		for(String l : pl) {
 			List<Note> pl1 = new ArrayList<>();
-			for(String l1 : f.getStringList("Song.Content.Parts." + l)) pl1.add(new Note(this, l1));
-			p.put(l, pl1);
+			for(String l1 : file.getStringList("Song.Content.Parts." + l)) pl1.add(new Note(this, l1));
+			noteParts.put(l, pl1);
 		}
 		
-		List<String> ml = f.getStringList("Song.Content.Main");
+		List<String> ml = file.getStringList("Song.Content.Main");
 		for(String l : ml) m.add(new Note(this, l));
 		
 		for(Note n : m) {
@@ -138,34 +126,34 @@ public class Song {
 			
 		}
 		
-		f = null;
+		file = null;
 		
 	}
 	
 	
-	public String getFileName() { return fn; }
+	public String getFileName() { return fileName; }
 	
 	
 	public String getId() { return id; }
 	
-	public String getTitle() { return t; }
+	public String getTitle() { return title; }
 	
-	public String getOriginalAuthor() { return o; }
+	public String getOriginalAuthor() { return oAuthor; }
 	
-	public String getAuthor() { return a; }
+	public String getAuthor() { return author; }
 	
-	public List<String> getDescription() { return d; }
+	public List<String> getDescription() { return description; }
 	
-	public List<String> getCategorys() { return cg; }
+	public List<String> getCategorys() { return categories; }
 	
-	public Material getMaterial() { return ma; }
+	public Material getMaterial() { return material; }
 	
-	public SoundCategory getCategory() { return c; }
+	public SoundCategory getCategories() { return soundCategory; }
 	
 	
-	public HashMap<String, String> getInstruments() { return i; }
+	public HashMap<String, String> getInstruments() { return instruments; }
 	
-	public HashMap<String, List<Note>> getParts() { return p; }
+	public HashMap<String, List<Note>> getNoteParts() { return noteParts; }
 	
 	public List<Note> getMain() { return m; }
 	

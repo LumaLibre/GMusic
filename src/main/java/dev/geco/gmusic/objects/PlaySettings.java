@@ -1,91 +1,81 @@
 package dev.geco.gmusic.objects;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class PlaySettings {
 	
-	private UUID u;
-	
-	private int l;
-	
-	private long v;
-	
-	private boolean j;
-	
-	private int m;
-	
-	private boolean e;
-	
-	private boolean q;
-	
-	private boolean t;
-	
-	private long r;
-	
-	private String c;
-	
-	private List<Song> f = new ArrayList<Song>();
+	private final UUID uuid;
+	private int playList;
+	private long volume;
+	private boolean playOnJoin;
+	private int playMode;
+	private boolean showParticles;
+	private boolean reverseMode;
+	private boolean toggle;
+	private long range;
+	private String currentSong;
+	private final List<Song> favorites;
 	
 	public PlaySettings(UUID UUID, int PlayList, long Volume, boolean PlayOnJoin, int PlayMode, boolean ShowingParticles, boolean ReverseMode, boolean Toggle, long Range, String CurrentSong, List<Song> Favorites) {
-		
-		l = PlayList;
-		u = UUID;
-		v = Volume;
-		j = PlayOnJoin;
-		m = PlayMode;
-		e = ShowingParticles;
-		q = ReverseMode;
-		t = Toggle;
-		r = Range;
-		c = CurrentSong;
-		f = Favorites;
-		
+		playList = PlayList;
+		uuid = UUID;
+		volume = Volume;
+		playOnJoin = PlayOnJoin;
+		playMode = PlayMode;
+		showParticles = ShowingParticles;
+		reverseMode = ReverseMode;
+		toggle = Toggle;
+		range = Range;
+		currentSong = CurrentSong;
+		favorites = Favorites;
 	}
 	
-	public UUID getUUID() { return u; }
+	public UUID getUUID() { return uuid; }
 	
-	public int getPlayList() { return l; }
+	public int getPlayList() { return playList; }
 	
-	public void setPlayList(int PlayList) { l = PlayList; }
+	public void setPlayList(int PlayList) { playList = PlayList; }
 	
-	public long getVolume() { return v; }
+	public long getVolume() { return volume; }
 	
-	public float getFixedVolume() { return (float) (v * 2) / 100; }
+	public float getFixedVolume() { return (float) (volume * 2) / 100; }
 	
-	public void setVolume(long Volume) { v = Volume; }
+	public void setVolume(long Volume) { volume = Volume; }
 	
-	public boolean isPlayOnJoin() { return j; }
+	public boolean isPlayOnJoin() { return playOnJoin; }
 	
-	public void setPlayOnJoin(boolean PlayOnJoin) { j = PlayOnJoin; }
+	public void setPlayOnJoin(boolean PlayOnJoin) { playOnJoin = PlayOnJoin; }
 	
-	public int getPlayMode() { return m; }
+	public int getPlayMode() { return playMode; }
 	
-	public void setPlayMode(int PlayMode) { m = PlayMode; }
+	public void setPlayMode(int PlayMode) { playMode = PlayMode; }
 	
-	public boolean isShowingParticles() { return e; }
+	public boolean isShowingParticles() { return showParticles; }
 	
-	public void setShowingParticles(boolean ShowingParticles) { e = ShowingParticles; }
+	public void setShowingParticles(boolean ShowingParticles) { showParticles = ShowingParticles; }
 	
-	public boolean isReverseMode() { return q; }
+	public boolean isReverseMode() { return reverseMode; }
 	
-	public void setReverseMode(boolean ReverseMode) { q = ReverseMode; }
+	public void setReverseMode(boolean ReverseMode) { reverseMode = ReverseMode; }
 	
-	public boolean isToggleMode() { return t; }
+	public boolean isToggleMode() { return toggle; }
 	
-	public void setToggleMode(boolean ToggleMode) { t = ToggleMode; }
+	public void setToggleMode(boolean ToggleMode) { toggle = ToggleMode; }
 	
-	public long getRange() { return r; }
+	public long getRange() { return range; }
 	
-	public void setRange(long Range) { r = Range; }
+	public void setRange(long Range) { range = Range; }
 	
-	public String getCurrentSong() { return c; }
+	public String getCurrentSong() { return currentSong; }
 	
-	public void setCurrentSong(String CurrentSong) { c = CurrentSong; }
+	public void setCurrentSong(String CurrentSong) { currentSong = CurrentSong; }
 	
-	public List<Song> getFavorites() { return f; }
+	public List<Song> getFavorites() { return favorites; }
 	
-	public void addFavoriteSong(Song S) { f.add(S); }
+	public void addFavoriteSong(Song S) { favorites.add(S); }
 	
-	public void removeFavoriteSong(Song S) { f.remove(S); }
+	public void removeFavoriteSong(Song S) { favorites.remove(S); }
 	
 }

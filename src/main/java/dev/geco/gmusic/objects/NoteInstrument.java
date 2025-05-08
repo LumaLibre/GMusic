@@ -19,16 +19,16 @@ public enum NoteInstrument {
 	INST_14(14, "block.note_block.banjo"),
 	INST_15(15, "block.note_block.pling");
 	
-	private int i;
-	private String ppo;
+	private final int instrument;
+	private final String instPost;
 	
 	NoteInstrument(int Instrument, String InstPost) {
-		i = Instrument;
-		ppo = InstPost;
+		instrument = Instrument;
+		instPost = InstPost;
 	}
 	
 	public static String getInstrument(int Instrument) {
-		for(NoteInstrument ni : values()) if(ni.i == Instrument) return ni.ppo;
+		for(NoteInstrument ni : values()) if(ni.instrument == Instrument) return ni.instPost;
 		return null;
 	}
 	

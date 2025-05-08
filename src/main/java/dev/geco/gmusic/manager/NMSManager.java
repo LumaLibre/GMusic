@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class NMSManager {
 	
-	private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
+	private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<>();
 	
 	private static Class<?> getPrimitiveType(Class<?> Class) { return CORRESPONDING_TYPES.containsKey(Class) ? CORRESPONDING_TYPES.get(Class) : Class; }
 	
@@ -37,9 +37,10 @@ public class NMSManager {
 	}
 	
 	public static boolean isNewerOrVersion(long Version) {
-		String V = Bukkit.getServer().getClass().getPackage().getName();
-		V = V.substring(V.lastIndexOf('.') + 4);
-		return Long.parseLong(V.substring(0, V.indexOf('_'))) >= Version;
+//		String V = Bukkit.getServer().getClass().getPackage().getName();
+//		V = V.substring(V.lastIndexOf('.') + 4);
+//		return Long.parseLong(V.substring(0, V.indexOf('_'))) >= Version;
+		return true;
 	}
 	
 	public static boolean isNewMapVersion() { return getNMSClass("EntityPlayer") == null; }
@@ -57,7 +58,11 @@ public class NMSManager {
 	
 	public static Class<?> getNMSClass(String ClassName) {
 		Class<?> C = null;
-		try { return Class.forName("net.minecraft.server." + getVersion() + ClassName); } catch (Exception e) { }
+		try {
+			return Class.forName("net.minecraft.server." + getVersion() + ClassName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return C;
 	}
 	

@@ -1,9 +1,9 @@
 plugins {
-    `java-library`
+    java
     `maven-publish`
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
 }
 
-val apiVersion = "1.21.4-R0.1-SNAPSHOT"
 group = "dev.geco"
 version = "1.0.0"
 
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:${apiVersion}")
+    paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
 }
 

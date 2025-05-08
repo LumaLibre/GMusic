@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -11,8 +12,12 @@ import dev.geco.gmusic.main.GMusicMain;
 import dev.geco.gmusic.objects.*;
 import dev.geco.gmusic.objects.MusicGUI.MenuType;
 import dev.geco.gmusic.values.Values;
+import org.bukkit.persistence.PersistentDataType;
 
 public class MusicManager {
+
+	public static final NamespacedKey JUKEBOX_KEY = new NamespacedKey(GMusicMain.getInstance(), "jukebox");
+	public static final NamespacedKey DISC_KEY = new NamespacedKey(GMusicMain.getInstance(), "disc");
 	
 	private final GMusicMain GPM;
 	
@@ -76,8 +81,8 @@ public class MusicManager {
         			ItemMeta im = is.getItemMeta();
         			
         			im.setDisplayName(GPM.getMManager().getMessage("Items.disc-title", "%Title%", s.getTitle(), "%Author%", s.getAuthor().equals("") ? GPM.getMManager().getMessage("MusicGUI.disc-empty-author") : s.getAuthor(), "%OAuthor%", s.getOriginalAuthor().equals("") ? GPM.getMManager().getMessage("MusicGUI.disc-empty-oauthor") : s.getOriginalAuthor()));
-        			
-        			im.setLocalizedName(GPM.NAME + "_D_" + s.getId());
+
+					im.getPersistentDataContainer().set(DISC_KEY, PersistentDataType.STRING, s.getId());
         			
         			List<String> dl = new ArrayList<>();
         			
@@ -104,9 +109,9 @@ public class MusicManager {
     	i = new ItemStack(Material.JUKEBOX);
     	ItemMeta im = i.getItemMeta();
     	im.setDisplayName(GPM.getMManager().getMessage("Items.jukebox-title"));
-    	im.setLocalizedName(GPM.NAME + "_JB");
+		im.getPersistentDataContainer().set(JUKEBOX_KEY, PersistentDataType.BOOLEAN, true);
     	List<String> iml = new ArrayList<>();
-    	for(String imlr : GPM.getMManager().getMessage("Items.jukebox-description").split("\n")) iml.add(imlr);
+        Collections.addAll(iml, GPM.getMManager().getMessage("Items.jukebox-description").split("\n"));
     	im.setLore(iml);
     	i.setItemMeta(im);
     	

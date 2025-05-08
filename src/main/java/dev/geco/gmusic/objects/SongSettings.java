@@ -1,37 +1,38 @@
 package dev.geco.gmusic.objects;
 
-import java.util.*;
+
+import java.util.Timer;
 
 public class SongSettings {
 	
-	private Song s;
+	private final Song song;
 	
-	private Timer t;
+	private Timer timer;
 	
-	private long p;
+	private long position;
 	
-	private boolean q = false;
+	private boolean paused = false;
 	
-	public SongSettings(Song S, Timer T, long P) {
+	public SongSettings(Song song, Timer timer, long position) {
 		
-		s = S;
-		t = T;
-		p = P;
+		this.song = song;
+		this.timer = timer;
+		this.position = position;
 		
 	}
 	
-	public Song getSong() { return s; }
+	public Song getSong() { return song; }
 	
-	public Timer getTimer() { return t; }
+	public Timer getTimer() { return timer; }
 	
-	public void setTimer(Timer T) { t = T; }
+	public void setTimer(Timer T) { timer = T; }
 	
-	public long getPosition() { return p; }
+	public long getPosition() { return position; }
 	
-	public void setPosition(long P) { p = P; }
+	public void setPosition(long P) { position = P; }
 	
-	public boolean isPaused() { return q; }
+	public boolean isPaused() { return paused; }
 	
-	public void setPaused(boolean Paused) { q = Paused; }
+	public void setPaused(boolean Paused) { paused = Paused; }
 	
 }

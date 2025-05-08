@@ -28,18 +28,18 @@ public enum NotePitch {
 	NOTE_23(23, 1.88775F),
 	NOTE_24(24, 2.00000F);
 	
-	private int n;
-	private float ppo;
+	private final int note;
+	private final float pitchPost;
 	
 	NotePitch(int Note, float PitchPost) {
-		n = Note;
-		ppo = PitchPost;
+		note = Note;
+		pitchPost = PitchPost;
 	}
 	
 	public static float getPitch(int Note) {
 		if(Note < 0) return 0.5f;
 		if(Note > 24) return 2f;
-		for(NotePitch np : values()) if(np.n == Note) return np.ppo;
+		for(NotePitch np : values()) if(np.note == Note) return np.pitchPost;
 		return 1.0f;
 	}
 	

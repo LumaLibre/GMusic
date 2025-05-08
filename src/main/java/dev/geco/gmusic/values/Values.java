@@ -27,7 +27,7 @@ public class Values {
 	
 	public void clearSongs() { songs.clear(); }
 	
-	private HashMap<ItemStack, Song> disci = new HashMap<ItemStack, Song>();
+	private HashMap<ItemStack, Song> disci = new HashMap<>();
 	
 	public HashMap<ItemStack, Song> getDiscItems() { return disci; }
 	

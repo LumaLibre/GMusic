@@ -98,15 +98,15 @@ public class RadioManager {
 									
 									Location L = np.getDistance() == 0 ? P.getLocation() : GPM.getUtilMath().convertToStero(P.getLocation(), np.getDistance());
 									
-									if(!GPM.getCManager().USE_ENVIRONMENT_EFFECT) P.playSound(L, np.getSound(), S.getCategory(), v, np.getPitch());
+									if(!GPM.getCManager().USE_ENVIRONMENT_EFFECT) P.playSound(L, np.getSound(), S.getCategories(), v, np.getPitch());
 									else {
 										
-										if(GPM.getUtilCheck().isPlayerSwimming(P)) P.playSound(L, np.getSound(), S.getCategory(), v > 0.4f ? v - 0.3f : v, np.getPitch() - 0.15f);
-										else P.playSound(L, np.getSound(), S.getCategory(), v, np.getPitch());
+										if(GPM.getUtilCheck().isPlayerSwimming(P)) P.playSound(L, np.getSound(), S.getCategories(), v > 0.4f ? v - 0.3f : v, np.getPitch() - 0.15f);
+										else P.playSound(L, np.getSound(), S.getCategories(), v, np.getPitch());
 										
 									}
 									
-								} else if(np.getStopSound() != null) P.stopSound(np.getStopSound(), S.getCategory());
+								} else if(np.getStopSound() != null) P.stopSound(np.getStopSound(), S.getCategories());
 								
 							}
 							

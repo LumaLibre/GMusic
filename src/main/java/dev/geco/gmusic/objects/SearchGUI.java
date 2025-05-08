@@ -3,6 +3,9 @@ package dev.geco.gmusic.objects;
 import java.lang.reflect.*;
 import java.util.*;
 
+import dev.geco.gmusic.manager.NMSManager;
+import io.papermc.paper.math.BlockPosition;
+import net.minecraft.network.chat.PlayerChatMessage;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
@@ -12,8 +15,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 
-/*import net.minecraft.core.BlockPosition;
-import net.minecraft.network.chat.ChatMessage;
+/*import net.minecraft.network.chat.ChatMessage;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import net.minecraft.server.level.EntityPlayer;*/
 
@@ -27,9 +29,9 @@ public class SearchGUI {
 	
 	private Inventory i;
 	
-	private final GMusicMain GPM;
+	private GMusicMain GPM;
 	
-	private final Listener l;
+	private Listener l;
 	
 	private final AnvilClickEventHandler h;
 	
@@ -85,7 +87,8 @@ public class SearchGUI {
 		p = P;
 		
 		h = Handler;
-		
+
+		/*
 		BlockPosition = NMSManager.getNMSClass("BlockPosition");
         PacketPlayOutOpenWindow = NMSManager.getNMSClass("PacketPlayOutOpenWindow");
         ContainerAnvil = NMSManager.getNMSClass("ContainerAnvil");
@@ -221,7 +224,7 @@ public class SearchGUI {
 		GPM.getValues().putInputGUI(p, this);
 		
 		Bukkit.getPluginManager().registerEvents(l, GPM);
-		
+		 */
 	}
 	
 	public void destroy() {
@@ -237,135 +240,7 @@ public class SearchGUI {
 	}
 	
 	public void openInventory() {
-		
-		p.setLevel(p.getLevel() + 1);
-		
-		if(NMSManager.isNewMapVersion()) {
-
-			p.sendMessage("not available");
-			
-			/*i = Bukkit.createInventory(p, InventoryType.ANVIL, GPM.getMManager().getMessage("MusicGUI.music-search-menu-title"));
-			
-			ItemStack r = new ItemStack(Material.PAPER);
-            ItemMeta m = r.getItemMeta();
-            m.setDisplayName(GPM.getMManager().getMessage("MusicGUI.music-search-menu-field"));
-            r.setItemMeta(m);
-            i.setItem(0, r);
-			
-			p.openInventory(i);*/
-			
-			/*EntityPlayer P = NMSManager.getNewPlayer(p);
-			
-			net.minecraft.world.inventory.ContainerAnvil CA = new net.minecraft.world.inventory.ContainerAnvil(9, P.getInventory(), net.minecraft.world.inventory.ContainerAccess.at(P.getWorld(), new BlockPosition(0, 0, 0)));
-			
-			CA.checkReachable = false;
-			
-			CA.setTitle(new ChatMessage(GPM.getMManager().getMessage("MusicGUI.music-search-menu-title")));
-			
-			i = CA.getBukkitView().getTopInventory();
-			
-			ItemStack r = new ItemStack(Material.PAPER);
-            ItemMeta m = r.getItemMeta();
-            m.setDisplayName(GPM.getMManager().getMessage("MusicGUI.music-search-menu-field"));
-            r.setItemMeta(m);
-            i.setItem(0, r);
-            
-            int ID = P.nextContainerCounter();
-            
-            PacketPlayOutOpenWindow PPOW = new PacketPlayOutOpenWindow(ID, net.minecraft.world.inventory.Containers.h, new ChatMessage(GPM.getMManager().getMessage("MusicGUI.music-search-menu-title")));
-            NMSManager.sendNewPacket(p, PPOW);
-            
-            P.bV = CA;
-            
-            NMSManager.set(CA, "j", ID);
-            P.initMenu(CA);*/
-            
-		} else {
-			
-			try {
-	    		
-	            Object P = NMSManager.getNMSCopy(p);
-	            
-	            Constructor<?> CM = ChatMessage.getConstructor(String.class, Object[].class);
-	            
-	            if(useNewVersion) {
-	            	
-	            	Method CAM = NMSManager.getMethod("at", ContainerAccess, NMSManager.getNMSClass("World"), BlockPosition);
-	            	
-	            	Object CA = ContainerAnvil.getConstructor(int.class, NMSManager.getNMSClass("PlayerInventory"), ContainerAccess).newInstance(9, NMSManager.getPlayerField(p, "inventory"), CAM.invoke(ContainerAccess, NMSManager.getPlayerField(p, "world"), BlockPosition.getConstructor(int.class, int.class, int.class).newInstance(0, 0, 0)));
-	                NMSManager.getField(NMSManager.getNMSClass("Container"), "checkReachable").set(CA, false);
-	                
-	                NMSManager.getMethod("setTitle", NMSManager.getNMSClass("Container"), NMSManager.getNMSClass("IChatBaseComponent")).invoke(CA, CM.newInstance(GPM.getMManager().getMessage("MusicGUI.music-search-menu-title"), new Object[]{}));
-	                
-	                i = (Inventory) NMSManager.invokeMethod("getTopInventory", NMSManager.invokeMethod("getBukkitView", CA));
-	                
-	                ItemStack r = new ItemStack(Material.PAPER);
-	                ItemMeta m = r.getItemMeta();
-	                m.setDisplayName(GPM.getMManager().getMessage("MusicGUI.music-search-menu-field"));
-	                r.setItemMeta(m);
-	                i.setItem(0, r);
-	                
-	                int ID = (Integer) NMSManager.invokeMethod("nextContainerCounter", P);
-	                
-	                Object PC = NMSManager.getPlayerField(p, "playerConnection");
-	                Object PPOOW = PacketPlayOutOpenWindow.getConstructor(int.class, Containers, NMSManager.getNMSClass("IChatBaseComponent")).newInstance(ID, NMSManager.getField(Containers, "ANVIL").get(Containers), CM.newInstance(GPM.getMManager().getMessage("MusicGUI.music-search-menu-title"), new Object[]{}));
-	                
-	                Method SP = NMSManager.getMethod("sendPacket", PC.getClass(), PacketPlayOutOpenWindow);
-	                SP.invoke(PC, PPOOW);
-	                
-	                Field AC = NMSManager.getField(EntityHuman, "activeContainer");
-	                
-	                if(AC != null) {
-	                	
-	                	AC.set(P, CA);
-	                    
-	                    NMSManager.getField(NMSManager.getNMSClass("Container"), "windowId").set(AC.get(P), ID);
-	                    
-	                    NMSManager.getMethod("addSlotListener", AC.get(P).getClass(), P.getClass()).invoke(AC.get(P), P);
-	                    
-	                }
-	            	
-	            } else {
-	            	
-	            	Object CA = ContainerAnvil.getConstructor(NMSManager.getNMSClass("PlayerInventory"), NMSManager.getNMSClass("World"), BlockPosition, EntityHuman).newInstance(NMSManager.getPlayerField(p, "inventory"), NMSManager.getPlayerField(p, "world"), BlockPosition.getConstructor(int.class, int.class, int.class).newInstance(0, 0, 0), P);
-	                NMSManager.getField(NMSManager.getNMSClass("Container"), "checkReachable").set(CA, false);
-	                
-	                NMSManager.getMethod("setTitle", NMSManager.getNMSClass("Container"), NMSManager.getNMSClass("IChatBaseComponent")).invoke(CA, CM.newInstance(GPM.getMManager().getMessage("MusicGUI.music-search-menu-title"), new Object[]{}));
-	                
-	                i = (Inventory) NMSManager.invokeMethod("getTopInventory", NMSManager.invokeMethod("getBukkitView", CA));
-	                
-	                ItemStack r = new ItemStack(Material.PAPER);
-	                ItemMeta m = r.getItemMeta();
-	                m.setDisplayName(GPM.getMManager().getMessage("MusicGUI.music-search-menu-field"));
-	                r.setItemMeta(m);
-	                i.setItem(0, r);
-	                
-	                int ID = (Integer) NMSManager.invokeMethod("nextContainerCounter", P);
-	                
-	                Object PC = NMSManager.getPlayerField(p, "playerConnection");
-	                Object PPOOW = PacketPlayOutOpenWindow.getConstructor(int.class, String.class, NMSManager.getNMSClass("IChatBaseComponent"), int.class).newInstance(ID, "minecraft:anvil", CM.newInstance(GPM.getMManager().getMessage("MusicGUI.music-search-menu-title"), new Object[]{}), 0);
-	                
-	                Method SP = NMSManager.getMethod("sendPacket", PC.getClass(), PacketPlayOutOpenWindow);
-	                SP.invoke(PC, PPOOW);
-	                
-	                Field AC = NMSManager.getField(EntityHuman, "activeContainer");
-	                
-	                if(AC != null) {
-	                	
-	                	AC.set(P, CA);
-	                    
-	                    NMSManager.getField(NMSManager.getNMSClass("Container"), "windowId").set(AC.get(P), ID);
-	                    
-	                    NMSManager.getMethod("addSlotListener", AC.get(P).getClass(), P.getClass()).invoke(AC.get(P), P);
-	                    
-	                }
-	            	
-	            }
-	            
-	        } catch (Exception e) { e.printStackTrace(); }
-			
-		}
-		
+		p.sendMessage("Not implemented yet.");
 	}
 	
 }
